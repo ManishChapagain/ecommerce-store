@@ -6,7 +6,11 @@ def create_app():
     CORS(app)
 
     from .routes.cart import cart_bp
+    from .routes.checkout import checkout_bp
+    from .routes.admin import admin_bp
 
     app.register_blueprint(cart_bp, url_prefix="/cart")
+    app.register_blueprint(checkout_bp, url_prefix="/checkout")
+    app.register_blueprint(admin_bp, url_prefix="/admin")
 
     return app

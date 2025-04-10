@@ -1,7 +1,7 @@
 from app.models import store
 
 def place_order(client, user_id="test_user", apply_code=None):
-    item = {"name": "Item", "price": 100, "qty": 1}
+    item = {"name": "Apple", "qty": 1}
     client.post(f"/cart/{user_id}/add", json=item)
     payload = {}
     if apply_code:
@@ -36,6 +36,6 @@ def test_get_report(client):
 
     assert res.status_code == 200
     assert data["total_items_sold"] == store.NTH_ORDER
-    assert data["total_revenue"] == 100 * store.NTH_ORDER
+    assert data["total_revenue"] == 10 * store.NTH_ORDER
     assert data["total_discount_given"] == 0  # No discount applied
     assert len(data["discount_codes"]) == 1 

@@ -10,7 +10,7 @@ def place_order(client, user_id="test_user", apply_code=None):
 
 
 def test_get_code_not_available(client):
-    for _ in range(store.NTH_ORDER - 1):  # 3rd order
+    for _ in range(store.NTH_ORDER - 2):  # 2rd order
         place_order(client)
     res = client.get("/admin/get-code")
     assert res.status_code == 400
@@ -18,7 +18,7 @@ def test_get_code_not_available(client):
 
 
 def test_get_code_available(client):
-    for _ in range(store.NTH_ORDER):  # 4th order 
+    for _ in range(store.NTH_ORDER - 1):  # 3th order 
         place_order(client)
     res = client.get("/admin/get-code")
     assert res.status_code == 200

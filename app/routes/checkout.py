@@ -16,16 +16,19 @@ def checkout(user_id):
     subtotal = sum(item["price"] * item["qty"] for item in cart)
     discount = 0
 
-    # Check if current order is Nth and given discount code is valid
-    if current_discount_code and current_order_number % store.NTH_ORDER == 0:
-        last_available_code = store.DISCOUNT_CODES[-1]
-        if last_available_code["code"] == current_discount_code and not last_available_code["used"]:
-            discount = 0.10 * subtotal
-            last_available_code["used"] = True
-        elif last_available_code["code"] == current_discount_code and last_available_code["used"]:
-            return jsonify({"error": "Discount code already used"}), 400
+    # Check if current order is Nth and given discount code is valid (if given)
+    if current_discount_code:
+        if current_order_number % store.NTH_ORDER == 0:
+            last_available_code = store.DISCOUNT_CODES[-1]
+            if last_available_code["code"] == current_discount_code and not last_available_code["used"]:
+                discount = 0.10 * subtotal
+                last_available_code["used"] = True
+            elif last_available_code["code"] == current_discount_code and last_available_code["used"]:
+                return jsonify({"error": "Discount code already used"}), 400
+            else:
+                return jsonify({"error": "Invalid discount code"}), 400
         else:
-            return jsonify({"error": "Invalid discount code"}), 400
+            return jsonify({"error": "Cannot apply discount code"}), 400
 
     total = subtotal - discount
 
